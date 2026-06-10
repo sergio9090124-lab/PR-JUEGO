@@ -5,17 +5,17 @@ import java.awt.event.*;
 
 public class Vista {
     public Frame ventanaMenu, ventanaJuego, ventanaSeleccion;
-    public Dialog dlgRanking, dlgNombre, dlgError;
+    public Dialog dlgRanking, dlgNombre, dlgError, dlgRobar, dlgGanador;
     public Button btnNueva, btnRanking, btnAyuda, btnSalir, btnRobar;
     public Button btn2, btn3, btn4;
     public Panel panelCartas;
-    public Label lblTurno, lblMesa;
+    public Label lblTurno, lblMesa, lblCartaRobada, lblGanadorMensaje;
     public TextArea txtRanking;
     public TextField txtNombre;
     public Button btnAceptarNombre;
 
     public Vista() {
-    	// MENU
+        // MENÚ 
         ventanaMenu = new Frame("UNO");
         ventanaMenu.setLayout(new GridLayout(4, 1));
         btnNueva = new Button("Nueva Partida");
@@ -28,7 +28,7 @@ public class Vista {
         ventanaMenu.setSize(300, 300);
         ventanaMenu.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { System.exit(0); } });
 
-        //SELECCIÓN JUGADORES
+        // SELECCIÓN JUGADORES
         ventanaSeleccion = new Frame("Jugadores");
         ventanaSeleccion.setLayout(new GridLayout(3, 1));
         btn2 = new Button("2 Jugadores");
@@ -38,7 +38,7 @@ public class Vista {
         ventanaSeleccion.setSize(200, 200);
         ventanaSeleccion.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { ventanaSeleccion.setVisible(false); } });
 
-        // VENTANAS
+        // DIALOGS
         dlgRanking = new Dialog(ventanaMenu, "Ranking", true);
         dlgRanking.setLayout(new BorderLayout());
         txtRanking = new TextArea("", 10, 30, TextArea.SCROLLBARS_VERTICAL_ONLY);
@@ -69,7 +69,27 @@ public class Vista {
         dlgError.setSize(200, 120);
         dlgError.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgError.setVisible(false); } });
 
-        // JUEGO
+        dlgRobar = new Dialog(ventanaJuego, "Carta Robada", true);
+        dlgRobar.setLayout(new FlowLayout());
+        lblCartaRobada = new Label("Has robado: ");
+        Button btnOkRobar = new Button("Aceptar");
+        btnOkRobar.addActionListener(e -> dlgRobar.setVisible(false));
+        dlgRobar.add(lblCartaRobada);
+        dlgRobar.add(btnOkRobar);
+        dlgRobar.setSize(250, 120);
+        dlgRobar.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgRobar.setVisible(false); } });
+
+        dlgGanador = new Dialog(ventanaJuego, "¡Fin de la Partida!", true);
+        dlgGanador.setLayout(new FlowLayout());
+        lblGanadorMensaje = new Label("");
+        Button btnOkGanador = new Button("Aceptar");
+        btnOkGanador.addActionListener(e -> dlgGanador.setVisible(false));
+        dlgGanador.add(lblGanadorMensaje);
+        dlgGanador.add(btnOkGanador);
+        dlgGanador.setSize(300, 120);
+        dlgGanador.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgGanador.setVisible(false); } });
+
+        // JUEGO 
         ventanaJuego = new Frame("Partida en curso");
         ventanaJuego.setLayout(new BorderLayout());
         Panel pN = new Panel(new GridLayout(2,1));

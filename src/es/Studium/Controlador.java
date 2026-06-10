@@ -57,13 +57,19 @@ public class Controlador implements ActionListener {
             pedirNombre(); 
         } else if (e.getSource() == v.btnRobar) {
             m.robarCarta(turno);
+            
+            ArrayList<String> manoActual = m.getMano(turno);
+            String cartaRobada = manoActual.get(manoActual.size() - 1);
+            v.lblCartaRobada.setText("Has robado: " + cartaRobada);
+            v.lblCartaRobada.setForeground(getColor(cartaRobada));
+            v.dlgRobar.setVisible(true); // Bloquea hasta que aceptan
+            
             turno = (turno + 1) % numJugadores;
             actualizarPantallaJuego();
         } else if (e.getSource() == v.btnRanking) {
             v.txtRanking.setText(m.obtenerRanking());
             v.dlgRanking.setVisible(true);
         } else if (e.getSource() == v.btnAyuda) {
-            // --- RUTA MODIFICADA AQUÍ ---
             try {
                 Runtime.getRuntime().exec("hh.exe manual_uno\\AyudaUno.chm");
             } catch (Exception ex) {
@@ -107,6 +113,10 @@ public class Controlador implements ActionListener {
                 if (m.jugarCarta(turno, index)) {
                     if (m.getMano(turno).isEmpty()) {
                         m.guardarRanking(nombres[turno]);
+                        
+                        v.lblGanadorMensaje.setText("¡" + nombres[turno] + " ha ganado la partida!");
+                        v.dlgGanador.setVisible(true); 
+                        
                         v.ventanaJuego.setVisible(false);
                     } else {
                         turno = (turno + 1) % numJugadores;
