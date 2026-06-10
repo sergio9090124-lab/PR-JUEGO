@@ -28,10 +28,31 @@ public class Controlador implements ActionListener {
         v.btn3.addActionListener(this);
         v.btn4.addActionListener(this);
         
+        // --- PROCESO PASO A PASO AL PULSAR ACEPTAR ---
         v.btnAceptarNombre.addActionListener(e -> {
-            nombres[jugadorActualInput] = v.txtNombre.getText();
+            String nombreIntroducido = v.txtNombre.getText().trim();
+            if (nombreIntroducido.isEmpty()) {
+                nombreIntroducido = "Jugador " + (jugadorActualInput + 1);
+            }
+            
+            // Guardamos el nombre en la posición actual
+            nombres[jugadorActualInput] = nombreIntroducido;
             v.txtNombre.setText(""); 
-            v.dlgNombre.setVisible(false);
+            v.dlgNombre.setVisible(false); // Ocultamos el diálogo actual
+            
+            // Pasamos al siguiente jugador de forma controlada
+            jugadorActualInput++;
+            
+            if (jugadorActualInput < numJugadores) {
+                // Si aún quedan jugadores, configuramos el diálogo para el siguiente y lo mostramos
+                v.dlgNombre.setTitle("Nombre Jugador " + (jugadorActualInput + 1));
+                v.dlgNombre.setVisible(true);
+            } else {
+                // Si ya tenemos todos los nombres, iniciamos la partida de forma segura
+                m.iniciarPartida(numJugadores);
+                v.ventanaJuego.setVisible(true);
+                actualizarPantallaJuego();
+            }
         });
     }
 
@@ -54,7 +75,11 @@ public class Controlador implements ActionListener {
             
             nombres = new String[numJugadores];
             jugadorActualInput = 0;
-            pedirNombre(); 
+            v.ventanaSeleccion.setVisible(false);
+            
+            // Lanzamos el primer diálogo de nombre de forma individual
+            v.dlgNombre.setTitle("Nombre Jugador 1");
+            v.dlgNombre.setVisible(true);
         } else if (e.getSource() == v.btnRobar) {
             m.robarCarta(turno);
             
@@ -62,7 +87,7 @@ public class Controlador implements ActionListener {
             String cartaRobada = manoActual.get(manoActual.size() - 1);
             v.lblCartaRobada.setText("Has robado: " + cartaRobada);
             v.lblCartaRobada.setForeground(getColor(cartaRobada));
-            v.dlgRobar.setVisible(true); // Bloquea hasta que aceptan
+            v.dlgRobar.setVisible(true); 
             
             turno = (turno + 1) % numJugadores;
             actualizarPantallaJuego();
@@ -75,20 +100,6 @@ public class Controlador implements ActionListener {
             } catch (Exception ex) {
                 System.out.println("Error al abrir el archivo de ayuda: " + ex.getMessage());
             }
-        }
-    }
-
-    private void pedirNombre() {
-        if (jugadorActualInput < numJugadores) {
-            v.dlgNombre.setTitle("Jugador " + (jugadorActualInput + 1));
-            v.dlgNombre.setVisible(true); 
-            jugadorActualInput++;
-            pedirNombre(); 
-        } else {
-            v.ventanaSeleccion.setVisible(false);
-            m.iniciarPartida(numJugadores);
-            v.ventanaJuego.setVisible(true);
-            actualizarPantallaJuego();
         }
     }
 
@@ -106,7 +117,6 @@ public class Controlador implements ActionListener {
             final int index = i;
             String textoCarta = manoActual.get(i);
             Button btn = new Button(textoCarta);
-            
             btn.setBackground(getColor(textoCarta));
 
             btn.addActionListener(ev -> {

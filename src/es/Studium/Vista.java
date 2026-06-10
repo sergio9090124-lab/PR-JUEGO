@@ -15,7 +15,7 @@ public class Vista {
     public Button btnAceptarNombre;
 
     public Vista() {
-        // MENÚ 
+        // --- MENÚ PRINCIPAL ---
         ventanaMenu = new Frame("UNO");
         ventanaMenu.setLayout(new GridLayout(4, 1));
         btnNueva = new Button("Nueva Partida");
@@ -28,7 +28,7 @@ public class Vista {
         ventanaMenu.setSize(300, 300);
         ventanaMenu.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { System.exit(0); } });
 
-        // SELECCIÓN JUGADORES
+        // --- SELECCIÓN JUGADORES ---
         ventanaSeleccion = new Frame("Jugadores");
         ventanaSeleccion.setLayout(new GridLayout(3, 1));
         btn2 = new Button("2 Jugadores");
@@ -38,7 +38,7 @@ public class Vista {
         ventanaSeleccion.setSize(200, 200);
         ventanaSeleccion.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { ventanaSeleccion.setVisible(false); } });
 
-        // DIALOGS
+        // --- DIÁLOGOS ---
         dlgRanking = new Dialog(ventanaMenu, "Ranking", true);
         dlgRanking.setLayout(new BorderLayout());
         txtRanking = new TextArea("", 10, 30, TextArea.SCROLLBARS_VERTICAL_ONLY);
@@ -69,6 +69,7 @@ public class Vista {
         dlgError.setSize(200, 120);
         dlgError.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgError.setVisible(false); } });
 
+        // --- DIÁLOGO CARTA ROBADA ---
         dlgRobar = new Dialog(ventanaJuego, "Carta Robada", true);
         dlgRobar.setLayout(new FlowLayout());
         lblCartaRobada = new Label("Has robado: ");
@@ -79,6 +80,7 @@ public class Vista {
         dlgRobar.setSize(250, 120);
         dlgRobar.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgRobar.setVisible(false); } });
 
+        // --- DIÁLOGO GANADOR ---
         dlgGanador = new Dialog(ventanaJuego, "¡Fin de la Partida!", true);
         dlgGanador.setLayout(new FlowLayout());
         lblGanadorMensaje = new Label("");
@@ -89,7 +91,7 @@ public class Vista {
         dlgGanador.setSize(300, 120);
         dlgGanador.addWindowListener(new WindowAdapter() { public void windowClosing(WindowEvent e) { dlgGanador.setVisible(false); } });
 
-        // JUEGO 
+        // --- VENTANA DE JUEGO ---
         ventanaJuego = new Frame("Partida en curso");
         ventanaJuego.setLayout(new BorderLayout());
         Panel pN = new Panel(new GridLayout(2,1));
